@@ -13,7 +13,7 @@ var TextView = Backbone.View.extend({
         var textVal = this.model.get("value");
         var btn = '<button>Clear</button>';
         var input = '<input type="text" value="' + textVal + '" />';
-        this.$el.html(textVal+"<br><div>" + input + btn + "</div>");
+        this.$el.html(textVal+"<br><div>" + input + btn +  "</div>");
     },
     initialize: function () {
         this.model.on("change", this.render, this);
@@ -43,26 +43,39 @@ var TextCollection = Backbone.Collection.extend({
 });
 
 var TextCollectionView = Backbone.View.extend({
+
     render : function () {
         var btn = '<button id="addbutton">Add Text</button>';
         var div = '<div id="text-list"></div>';
-        this.$el.html(div + btn);
+        var del = '<button id="delbutton">Delete</button>';//delete button
+        this.$el.html(div + btn + del);
     },
     initialize : function () {
+        this.allViews = [];
         this.listenTo(this.collection, 'add', this.addView);
+        this.listenTo(this.collection, 'remove', this.removeView)//eventually remove view
     },
     events : {
-        "click #addbutton" : "addModel"
+        "click #addbutton" : "addModel",
+        "click #delbutton" : "removeModel"  //remove button
     },
     addModel : function () {
         this.collection.add({});
         // collection adds a model, fires add event, then listener calls this.addView(model)
+    },
+    removeModel : function(){//remove button functionality
+        this.collection.pop();
     },
     addView : function (newModel) {
         newModel.set("value","Enter something here...");
         var view = new TextView({model : newModel});
         view.render();
         this.$("#text-list").append(view.$el);
+        this.allViews.push(view);
+    },
+    removeView : function(){ //removing the view
+        var view = this.allViews.pop(); 
+        view.remove()
     },
 });
 

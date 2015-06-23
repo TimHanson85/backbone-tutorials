@@ -4,6 +4,23 @@ var Counter = Backbone.Model.extend({
 });
 
 var CounterView = Backbone.View.extend({
+///new stuff down+++++++++++
+
+    initialize: function(){
+        var myself = this;
+        this.$el.on("click","button", function(){
+            var mod = myself.model;
+            var currVal = mod.get('value');
+            mod.set('value', currVal+1);
+        })
+            this.model.on("change", function () {
+                myself.render();
+
+            });
+            this.render();
+        
+    }
+// new stuff up+++++++++++=
     render: function () {
         var val = this.model.get("value");
         var btn = '<button class="bUp">Increment</button>';
@@ -23,16 +40,16 @@ $(document).ready( function () {
     counterView = new CounterView({model : counterModel});
     counterView.render();
 
-    counterModel.on("change", function () {
-        counterView.render();
+    // counterModel.on("change", function () {
+    //     counterView.render();
 
-    });
+    // });
 
-    counterView.$el.on("click",".bUp", function () {
-        var mod = counterView.model;
-        var currVal = mod.get("value");
-        mod.set("value",currVal+1);
-    });
+    // counterView.$el.on("click",".bUp", function () {
+    //     var mod = counterView.model;
+    //     var currVal = mod.get("value");
+    //     mod.set("value",currVal+1);
+    // });
 
     counterView.$el.on("click",".bDown", function () {
         var mod = counterView.model;
