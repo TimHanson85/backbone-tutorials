@@ -13,9 +13,11 @@ var TextView = Backbone.View.extend({
         var textVal = this.model.get("value");
         var btn = '<button>Clear</button>';
         var input = '<input type="text" value="' + textVal + '" />';
-        this.$el.html(textVal+"<br><div>" + input + btn +  "</div>");
+        var edit = '<p>edited'  + this.model.get('edited') + '</p>'
+        this.$el.html(textVal+"<br><div>" + input + btn + edit + "</div>");
     },
     initialize: function () {
+        this.model.set({edited: 0});//added edited
         this.model.on("change", this.render, this);
         // last argument 'this' ensures that render's
         // 'this' means the view, not the model
@@ -30,10 +32,13 @@ var TextView = Backbone.View.extend({
     },
     clear: function () {
         this.model.replace("");
+        this.model.get('edited') ++;
     },
     updateOnEnter: function (e){
         if(e.keyCode == 13) {
             this.replace();
+            this.model.get('edited') ++;
+
         }
     }
 });
