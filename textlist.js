@@ -8,11 +8,15 @@ var TextModel = Backbone.Model.extend({
     }
 });
 
+
+
 var TextView = Backbone.View.extend({
+    template: _.template('<input type="text" value="<%=textVal%>" />'),
+    // template: _.template("<%=textVal%>""<br><div>""<%=input%>""<%=btn%>""<%=edit%>""</div>")
     render: function () {
         var textVal = this.model.get("value");
         var btn = '<button>Clear</button>';
-        var input = '<input type="text" value="' + textVal + '" />';
+        var input = this.template({textVal: textVal});
         var edit = '<p>edited'  + this.model.get('edited') + '</p>'
         this.$el.html(textVal+"<br><div>" + input + btn + edit + "</div>");
     },

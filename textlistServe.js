@@ -1,5 +1,4 @@
 
-$(document).ready( function () {
 
 var TextModel = Backbone.Model.extend({
     defaults : {"value" : ""},
@@ -31,7 +30,8 @@ var TextView = Backbone.View.extend({
         this.model.replace(str);
     },
     clear: function () {
-        this.model.replace("");
+        var str = this.$el.find('input').val();
+        this.model.replace(str);
     },
     updateOnEnter: function (e){
         if(e.keyCode == 13) {
@@ -62,17 +62,22 @@ var TextCollectionView = Backbone.View.extend({
     events : {
         "click #addbutton" : "addCollection"
     },
-    addOne : function (txt) {
-        txt.set("value","Enter something here...");
-        var view = new TextView({model : txt});
+    addOne : function (model) {
+        model.set("value","Enter something here...");
+        var view = new TextView({model : model});
         view.render();
         this.$("#text-list").append(view.$el);
+        idCount++;
     },
     addCollection : function () {
         this.collection.create({id : idCount});
-        idCount = idCount+1;
+        // idCount = idCount+1;
     }
 });
+
+var textCollection, textCollectionView
+
+$(document).ready( function () {
 
 var textCollection = new TextCollection();
 

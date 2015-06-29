@@ -18,8 +18,16 @@ app.get('/counter/1', function (req, res) {
 app.put('/counter/1', function (req, res) {
     console.log(req.body);
     counter1 = req.body.value;
-    res.end();
+    //generate id
+    res.end("{}");
 });
+
+app.post('/counter/1', function (req, res){
+	console.log(req.body);
+    counter1 = req.body.value;
+    //generate id
+    res.end("{id.newId}");
+}
 
 app.listen(3000, function () {
     console.log("server started");
